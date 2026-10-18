@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>WardogsXpTracker</AssemblyName>
+    <Version>0.4.0-beta.1</Version>
+    <AssemblyVersion>0.4.0.0</AssemblyVersion>
+    <FileVersion>0.4.0.0</FileVersion>
+    <ApplicationIcon>../../assets/branding/wardogs-xp.ico</ApplicationIcon>
+    <PublishSingleFile>true</PublishSingleFile>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../WardogsXpTracker.Windows/WardogsXpTracker.Windows.csproj" />
+    <Resource Include="../../assets/branding/wardogs-logo.jpg" Link="Assets/wardogs-logo.jpg" />
+    <Resource Include="../../assets/branding/wardogs-xp.ico" Link="Assets/wardogs-xp.ico" />
+    <EmbeddedResource Include="../../assets/testing/*">
+      <LogicalName>WardogsXpTracker.MockData.%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

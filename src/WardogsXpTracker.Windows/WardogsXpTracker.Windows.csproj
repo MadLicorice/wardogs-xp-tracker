@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../WardogsXpTracker.Core/WardogsXpTracker.Core.csproj" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
+    <EmbeddedResource Include="../../assets/ocr/eng.traineddata" LogicalName="WardogsXpTracker.Ocr.eng.traineddata" />
+    <EmbeddedResource Include="../../assets/native/win-x64/*.dll" LogicalName="WardogsXpTracker.Native.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../assets/licenses/*" LogicalName="WardogsXpTracker.Licenses.%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

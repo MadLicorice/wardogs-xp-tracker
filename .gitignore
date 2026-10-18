@@ -1,0 +1,19 @@
+# .NET and editor output
+**/bin/
+**/obj/
+.vs/
+.idea/
+*.user
+*.suo
+TestResults/
+
+# Local captures, private fixtures, runtime saves, and downloaded tools
+artifacts/
+test-assets/private/
+local-data/
+.work/
+*.log
+
+# Python development caches
+__pycache__/
+*.py[cod]

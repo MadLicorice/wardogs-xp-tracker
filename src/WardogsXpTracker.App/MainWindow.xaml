@@ -1,0 +1,684 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="clr-namespace:WardogsXpTracker.App" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="WardogsXpTracker.App.MainWindow" Style="{StaticResource {x:Type Window}}" Title="MadLicorice's WARDOGS XP Tracker" Width="1280" SizeToContent="Manual" Height="819" MinWidth="816" MinHeight="672" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="OptionalCardText" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Style.Triggers>
+                <Trigger Property="Text" Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="SectionLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{StaticResource Muted}" />
+        </Style>
+        <Style x:Key="SmallButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+        <Style x:Key="MatchActionsCell" TargetType="DataGridCell" BasedOn="{StaticResource MainTableCellStyle}">
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="MatchActionsButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="28" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="#BCC8D7" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#EBEDF1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="#11151B" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid KeyboardNavigation.TabNavigation="Local">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <StackPanel IsItemsHost="True" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,4" />
+                            <ContentPresenter Grid.Row="1" x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="#A8B0BC" />
+            <Setter Property="Background" Value="#1D222A" />
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,0,3,0" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabBorder" Background="{TemplateBinding Background}" BorderBrush="#303A48" BorderThickness="1,1,1,2" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="#F1CF69" />
+                                <Setter TargetName="TabBorder" Property="Background" Value="#293029" />
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#B49A4C" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                    <Condition Property="IsSelected" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="TabBorder" Property="Background" Value="#303A48" />
+                            </MultiTrigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#88D3EE" />
+                            </Trigger>
+                            <Trigger Property="Tag" Value="JustEnabled">
+                                <Setter Property="Foreground" Value="#F1CF69" />
+                                <Setter TargetName="TabBorder" Property="Background" Value="#293029" />
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#B49A4C" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DarkComboItem" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#EBEDF1" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="ItemBorder" Background="Transparent" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#3A4656" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#234858" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#252D38" />
+            <Setter Property="Foreground" Value="#EBEDF1" />
+            <Setter Property="BorderBrush" Value="#475365" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource DarkComboItem}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Focusable="False" IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}" BorderThickness="1" CornerRadius="4">
+                                            <TextBlock Text="⌄" Foreground="#BAC4D1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,3" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter Margin="11,6,32,6" IsHitTestVisible="False" VerticalAlignment="Center" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
+                            <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
+                                <Border Background="#252D38" BorderBrush="#475365" BorderThickness="1" CornerRadius="4" MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="320">
+                                    <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#151B23" />
+            <Setter Property="Foreground" Value="#EBEDF1" />
+            <Setter Property="BorderBrush" Value="#475365" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <ScrollViewer x:Name="MainScrollViewer" Background="#11151B" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" CanContentScroll="False">
+        <Grid Margin="8" x:Name="AppRoot" SizeChanged="AppRoot_SizeChanged">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <DockPanel Height="28" Margin="0,0,0,4">
+                <CheckBox x:Name="AutoReadToggle" DockPanel.Dock="Right" Content="Read every 2 seconds" FontSize="11" Margin="8,0,0,0" Checked="AutoRead_Changed" Unchecked="AutoRead_Changed" ToolTip="Automatically reads XP during the active match and waits for final PROGRESSION totals after the score screen. Images stay in memory unless you save a report." />
+                <Border x:Name="MockModeBanner" DockPanel.Dock="Right" Visibility="Collapsed" Background="#493125" BorderBrush="#E4B66C" BorderThickness="1" CornerRadius="4" Padding="5,0" Margin="8,0,0,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="MOCK DATA" Foreground="#F5D19D" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,6,0" ToolTip="Mock data saves separately from real seasons." />
+                        <Button x:Name="ReturnRealDataButton" Content="Real data" Click="ReturnRealData_Click" Style="{StaticResource SmallButton}" Padding="7,3" Margin="0,0,5,0" ToolTip="Return to real season data" />
+                        <Button x:Name="HeaderNextMockButton" Content="Next mock + read" Click="NextMock_Click" Style="{StaticResource SmallButton}" Padding="7,3" Visibility="Collapsed" />
+                    </StackPanel>
+                </Border>
+                <Border Background="#080B0F" CornerRadius="3" Padding="1" Margin="0,0,8,0">
+                    <Image Source="/WardogsXpTracker;component/Assets/wardogs-logo.jpg" Width="26" Height="26" Stretch="Uniform" AutomationProperties.Name="WARDOGS logo" />
+                </Border>
+                <TextBlock FontSize="18" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="MadLicorice's WARDOGS XP Tracker">
+                    <Run Text="MadLicorice's " Foreground="#D6C490" FontSize="12" />
+                    <Run Text="WARDOGS" Foreground="#F1CF69" />
+                    <Run Text=" XP TRACKER" Foreground="#F1F3F5" />
+                </TextBlock>
+            </DockPanel>
+            <Border Grid.Row="1" Background="{StaticResource Surface}" CornerRadius="6" Padding="8,2" Margin="0,0,0,4" Height="40">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="86" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="76" />
+                        <ColumnDefinition Width="174" />
+                        <ColumnDefinition Width="174" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="GAME WINDOW" Style="{StaticResource SectionLabel}" VerticalAlignment="Center" />
+                    <ComboBox x:Name="WindowSelector" Grid.Column="1" FontSize="12" Margin="0,0,6,0" AutomationProperties.Name="Game window" DropDownOpened="WindowSelector_DropDownOpened" SelectionChanged="GameWindow_SelectionChanged" ToolTip="Select the game window. Opening this list leaves mock capture and preserves its saved readings.">
+                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" /></DataTemplate></ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button x:Name="RefreshTargetsButton" Grid.Column="2" Content="Refresh" Click="Refresh_Click" FontSize="12" Padding="8,4" Margin="0,0,6,0" ToolTip="Refresh the real game window list. Mock readings stay saved separately." />
+                    <Button x:Name="SnapshotButton" Grid.Column="3" Content="Snapshot · F3" Click="NewSnapshot_Click" Padding="8,4" Margin="0,0,6,0" ToolTip="Record a missing baseline or complete an armed baseline operation." FontSize="12" />
+                    <Button x:Name="CaptureButton" Grid.Column="4" Content="Check XP · F4" Click="Capture_Click" Padding="8,4" Background="#234858" BorderBrush="#59869A" FontSize="12" />
+                </Grid>
+            </Border>
+            <TabControl x:Name="MainTabs" Grid.Row="3" SelectedIndex="0" SelectionChanged="MainTabs_SelectionChanged">
+                <TabItem x:Name="SessionTrackerTab" Header="Session Tracker" Width="128">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="20" />
+                        </Grid.RowDefinitions>
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock x:Name="SessionHeading" Text="Start a new session" FontSize="16" FontWeight="SemiBold" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                                <TextBlock x:Name="SeasonStatus" Text="Season 2" FontSize="10" Foreground="#B7C5D4" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button x:Name="NewSessionButton" Content="New Session" Click="NewSession_Click" Background="#3D3B27" BorderBrush="#8C7D43" FontSize="12" Padding="10,5" Margin="0,0,6,0" />
+                                <Button x:Name="EndSessionButton" Content="End Session" Click="EndSession_Click" FontSize="12" Padding="10,5" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Row="1" x:Name="ReadStatusSlot" Margin="0,0,0,2">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" IsHitTestVisible="False">
+                                <Border Width="{Binding ActualWidth, ElementName=PendingFinalActions}" Margin="10,0,0,0" Visibility="{Binding Visibility, ElementName=PendingFinalPanel}" />
+                                <Border Width="{Binding ActualWidth, ElementName=OpenDeferredResultsButton}" Margin="10,0,0,0" Visibility="{Binding Visibility, ElementName=DeferredFinalPanel}" />
+                            </StackPanel>
+                            <TextBlock Grid.ColumnSpan="2" x:Name="SessionNotice" Text="Open UNLOCK and select a class. Each recorded baseline starts tracking immediately." Foreground="#C0CBD7" FontSize="11" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis">
+                                <TextBlock.ToolTip>
+                                    <StackPanel MaxWidth="420">
+                                        <TextBlock Text="{Binding Text, ElementName=SessionNotice}" />
+                                        <TextBlock Text="{Binding Text, ElementName=ArmingStatus}" Margin="0,5,0,0" />
+                                        <TextBlock Text="{Binding Text, ElementName=HotkeyStatus}" Margin="0,5,0,0" />
+                                    </StackPanel>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                            <Grid x:Name="SessionStateSlot" Grid.ColumnSpan="2">
+                                <Border x:Name="DefaultSessionPanel" Height="0" Visibility="Collapsed"><StackPanel><TextBlock x:Name="ArmingStatus" /><TextBlock x:Name="HotkeyStatus" /></StackPanel></Border>
+                                <Border x:Name="PendingFinalPanel" Visibility="Collapsed" Background="#383322" BorderBrush="#A68E43" BorderThickness="1" CornerRadius="5" Padding="8,1">
+                                    <DockPanel>
+                                        <StackPanel x:Name="PendingFinalActions" DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
+                                            <Button x:Name="RecordFinalButton" Content="Record Final XP" Click="ConfirmFinal_Click" Background="#2F513D" BorderBrush="#649578" Style="{StaticResource SmallButton}" Padding="10,4" Margin="0,0,7,0" ToolTip="Final XP is required before results can be recorded." ToolTipService.ShowOnDisabled="True" />
+                                            <Button x:Name="DeferFinalButton" Content="Decide Later" Click="DeferFinal_Click" Style="{StaticResource SmallButton}" Padding="10,4" />
+                                        </StackPanel>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock x:Name="PendingFinalTitle" Text="End of match detected" FontSize="13" FontWeight="Bold" Foreground="#F1CF69" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                                            <TextBlock x:Name="PendingFinalMessage" FontSize="11" Foreground="#D2C9AE" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                                <Border x:Name="DeferredFinalPanel" Visibility="Collapsed" Background="#202E3B" BorderBrush="#648FA9" BorderThickness="1" CornerRadius="5" Padding="8,2">
+                                    <DockPanel>
+                                        <Button x:Name="OpenDeferredResultsButton" DockPanel.Dock="Right" Content="Open Saved Results" Click="OpenSavedResults_Click" Style="{StaticResource SmallButton}" Padding="10,4" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                        <TextBlock x:Name="DeferredFinalText" FontSize="12" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                                    </DockPanel>
+                                </Border>
+                            </Grid>
+                            <Border x:Name="TrackerReadFeedback" Visibility="Collapsed" Background="#442B27" BorderBrush="#D18F6B" BorderThickness="2" CornerRadius="4" Padding="6,2">
+                                <DockPanel>
+                                    <TextBlock Text="READ REJECTED" FontWeight="Bold" Foreground="#FFD1AB" FontSize="11" VerticalAlignment="Center" Margin="0,0,10,0" TextWrapping="NoWrap" />
+                                    <TextBlock x:Name="TrackerReadFeedbackText" Foreground="#EED4C3" FontSize="11" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+                        <Border x:Name="ResumePanel" Visibility="Collapsed" />
+                        <Grid Grid.Row="2" x:Name="TrackerLayoutGrid">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="12" /><ColumnDefinition Width="300" /></Grid.ColumnDefinitions>
+                            <Grid x:Name="TrackerCardsRegion" Height="{Binding ActualHeight, ElementName=TrackerLayoutGrid}" MaxHeight="441" VerticalAlignment="Top">
+                                <Grid x:Name="TrackerCardSurface">
+                                    <ItemsControl x:Name="TrackerCards">
+                                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="2" Rows="3" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="{Binding Background}" BorderBrush="{Binding Accent}" BorderThickness="1" CornerRadius="7" Padding="8,3" Margin="0,0,6,4" ToolTip="{Binding CardTooltip}">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="22" />
+                                                            <RowDefinition Height="27" />
+                                                            <RowDefinition Height="6" />
+                                                            <RowDefinition Height="16" />
+                                                            <RowDefinition Height="16" />
+                                                            <RowDefinition Height="14" />
+                                                            <RowDefinition Height="*" />
+                                                            <RowDefinition Height="24" />
+                                                        </Grid.RowDefinitions>
+                                                        <DockPanel>
+                                                            <CheckBox DockPanel.Dock="Right" Content="Track" Tag="{Binding Class}" IsChecked="{Binding Enabled, Mode=OneWay}" Checked="TrackEnabled_Changed" Unchecked="TrackEnabled_Changed" FontSize="10" Foreground="#CAD2DB" />
+                                                            <TextBlock Text="{Binding ClassName}" FontSize="16" FontWeight="SemiBold" Foreground="#F3F5F7" TextWrapping="NoWrap" Margin="0,0,8,0" />
+                                                            <TextBlock Text="{Binding StateText}" Foreground="{Binding Accent}" FontSize="10" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding StateText}" />
+                                                        </DockPanel>
+                                                        <Grid Grid.Row="1">
+                                                            <TextBlock Text="{Binding GainText}" FontSize="20" FontWeight="SemiBold" Foreground="#F3F5F7" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0,0,25,0" />
+                                                            <Path Data="M 1,11 L 8,18 L 21,1" Stroke="#90F1B3" StrokeThickness="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Width="23" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="{Binding CheckmarkVisibility}" />
+                                                        </Grid>
+                                                        <ProgressBar Grid.Row="2" Value="{Binding ProgressValue}" Minimum="0" Maximum="100" Height="4" Foreground="{Binding Accent}" Background="#11171D" BorderThickness="0" />
+                                                        <Grid Grid.Row="3">
+                                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                                            <TextBlock Text="{Binding BaselineText}" FontSize="12" Foreground="#B9C4D0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding BaselineText}" />
+                                                            <TextBlock Grid.Column="1" Text="{Binding CurrentText}" FontSize="12" Foreground="#B9C4D0" TextAlignment="Right" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding CurrentText}" />
+                                                        </Grid>
+                                                        <TextBlock Grid.Row="4" Text="{Binding Detail}" FontSize="12" Foreground="#D3DAE3" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Detail}" />
+                                                        <TextBlock Grid.Row="5" Text="{Binding SecondaryText}" FontSize="10" Foreground="#F0B38C" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SecondaryTooltip}" />
+                                                        <Grid Grid.Row="7">
+                                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                            <Button Content="Re-Establish Baseline" Style="{StaticResource SmallButton}" Padding="7,3" FontSize="10" Tag="{Binding Class}" Click="Rebase_Click" Margin="0,0,5,0" />
+                                                            <Button Grid.Column="1" Content="Manual XP" Style="{StaticResource SmallButton}" Padding="7,3" FontSize="10" Tag="{Binding Class}" Click="Manual_Click" />
+                                                        </Grid>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
+                                <Border x:Name="InactiveSessionOverlay" Panel.ZIndex="10" Visibility="Visible" Background="#ED11151B" BorderBrush="#536170" BorderThickness="1" CornerRadius="7" Margin="0,0,6,4" Padding="16">
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="390">
+                                        <TextBlock x:Name="InactiveSessionTitle" Text="No Active Session" FontSize="24" FontWeight="SemiBold" Foreground="#F1CF69" TextAlignment="Center" />
+                                        <TextBlock x:Name="InactiveSessionMessage" Text="Select New Session before you record baselines." FontSize="12" Foreground="#C2CDD8" TextAlignment="Center" Margin="0,8,0,12" />
+                                        <Button x:Name="StartSessionOverlayButton" Content="New Session" Click="NewSession_Click" Background="#4B452B" BorderBrush="#B49A4C" Padding="18,7" HorizontalAlignment="Center" MinWidth="190" />
+                                        <Button x:Name="ResumeOverlayButton" Visibility="Collapsed" Content="Resume Saved Session" Click="ResumeSession_Click" Padding="18,7" HorizontalAlignment="Center" MinWidth="190" Margin="0,6,0,0" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            <ScrollViewer Grid.Column="2" x:Name="TrackerSidebar" Padding="0,0,4,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="False">
+                                <StackPanel Margin="0,0,6,0">
+                                    <Border x:Name="InteractiveWalkthroughPanel" Visibility="Collapsed" Background="#192A32" BorderBrush="#78BAD3" BorderThickness="2" CornerRadius="7" Padding="10" Margin="0,0,0,8">
+                                        <StackPanel>
+                                            <TextBlock x:Name="WalkthroughStepTitle" FontSize="16" FontWeight="SemiBold" Foreground="#A9E5F6" />
+                                            <TextBlock x:Name="WalkthroughMessage" FontSize="13" Foreground="#D7E2EB" Margin="0,8,0,8" />
+                                            <TextBlock x:Name="WalkthroughCertificationNotice" FontSize="12" FontWeight="SemiBold" Foreground="#F1CF69" Margin="0,0,0,10" />
+                                            <Button x:Name="WalkthroughPrimaryButton" Click="WalkthroughPrimary_Click" FontSize="12" Padding="8,6" />
+                                            <WrapPanel Margin="0,4,0,0">
+                                                <Button x:Name="WalkthroughSkipButton" Content="Skip Step" Click="WalkthroughSkip_Click" Style="{StaticResource SmallButton}" Margin="0,4,6,0" />
+                                                <Button x:Name="WalkthroughPauseButton" Content="Pause guide" Click="WalkthroughPause_Click" Style="{StaticResource SmallButton}" Margin="0,4,6,0" />
+                                                <Button x:Name="WalkthroughRestartButton" Content="Restart for new match" Click="WalkthroughRestart_Click" Style="{StaticResource SmallButton}" Margin="0,4,6,0" />
+                                                <Button x:Name="WalkthroughCloseButton" Content="Close guide" Click="WalkthroughClose_Click" Style="{StaticResource SmallButton}" Margin="0,4,0,0" />
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border x:Name="MockStepPanel" Visibility="Collapsed" Background="#28251D" BorderBrush="#8E784C" BorderThickness="1" CornerRadius="6" Padding="8" Margin="0,0,0,6" Height="66">
+                                        <StackPanel>
+                                            <TextBlock x:Name="MockStepTitle" FontWeight="SemiBold" Foreground="#F1CF69" Height="16" FontSize="11" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                                            <TextBlock x:Name="MockStepMessage" FontSize="11" Foreground="#D9D0BD" Margin="0,3,0,0" Height="32" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                                        </StackPanel>
+                                    </Border>
+                                <Border x:Name="AnalyticsPanel" Background="#221D23" BorderBrush="#DD6868" BorderThickness="3" CornerRadius="8" Padding="8" Margin="0,0,0,10" Height="374">
+                                    <StackPanel>
+                                        <TextBlock Text="For Analytics ONLY" FontSize="18" FontWeight="SemiBold" Foreground="#F1F3F5" />
+                                        <TextBlock x:Name="AnalyticsSummary" Text="Confirm each starting baseline for analytics. Tracking works while these confirmations remain pending." FontSize="11" Foreground="#D7BEC2" Margin="0,4,0,4" Height="32" TextTrimming="CharacterEllipsis" />
+                                        <ItemsControl x:Name="CoverageCards">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderBrush="#37404C" BorderThickness="0,0,0,1" Padding="0,2" Height="36">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel Margin="0,0,7,0" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding ClassName}" FontSize="10" FontWeight="SemiBold" Foreground="#DCE2E9" />
+                                                                <TextBlock Text="{Binding StatusText}" FontSize="10" Foreground="{Binding Accent}" Margin="0,1,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusText}" />
+                                                            </StackPanel>
+                                                            <Button Grid.Column="1" Content="{Binding ActionText}" Tag="{Binding Class}" IsEnabled="{Binding CanConfirm}" Click="ConfirmTrackCoverage_Click" Style="{StaticResource SmallButton}" Padding="7,5" FontSize="10" VerticalAlignment="Center" />
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <Button x:Name="ConfirmAllCoverageButton" Content="Confirm all captured baselines…" Click="Coverage_Click" Style="{StaticResource SmallButton}" Margin="0,5,0,0" Padding="8,5" />
+                                        <TextBlock x:Name="AnalyticsBonusStatus" Text="Bonus receipt is separate. Received bonuses are confirmed at match end." FontSize="10" Foreground="#B9C4D0" Margin="0,5,0,0" Height="28" TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+                                </Border>
+                                <Expander Header="Quick guide" IsExpanded="False" FontSize="11">
+                                    <StackPanel Margin="8,7,8,0">
+                                        <TextBlock Text="Open TAB → UNLOCK → a class. Show its current XP column, then record or check XP." Foreground="#B9C4D0" FontSize="11" />
+                                        <TextBlock Text="A green check means the earned-XP target is complete. It does not confirm bonus receipt." Foreground="#B9C4D0" FontSize="11" Margin="0,7,0,0" />
+                                    </StackPanel>
+                                </Expander>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                        <DockPanel Grid.Row="3" Margin="0,3,0,0">
+                            <Button x:Name="RetrySaveButton" Content="Retry save" Click="RetrySave_Click" Visibility="Collapsed" Style="{StaticResource SmallButton}" Padding="7,1" FontSize="10" DockPanel.Dock="Right" Margin="8,0,0,0" />
+                            <TextBlock x:Name="SaveStatus" Text="Local save not loaded." FontSize="10" Foreground="{StaticResource Muted}" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+                        </DockPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="AnalyticsTab" Header="Analytics" Width="86">
+                    <StackPanel>
+                        <WrapPanel Margin="0,0,0,8">
+                            <Button Content="Export analytics…" Click="ExportAnalytics_Click" Style="{StaticResource SmallButton}" Margin="0,0,8,0" />
+                            <Button x:Name="ImportAnalyticsButton" Content="Import analytics…" Click="ImportAnalytics_Click" Style="{StaticResource SmallButton}" Margin="0,0,8,0" />
+                            <Button x:Name="ReturnCurrentAnalyticsButton" Content="Return to current analytics" Click="ReturnCurrentAnalytics_Click" Style="{StaticResource SmallButton}" Visibility="Collapsed" Margin="0,0,8,0" />
+                            <Button x:Name="LoadFakeStatsButton" Content="Load fake stats" Visibility="Collapsed" Click="LoadFakeStats_Click" Style="{StaticResource SmallButton}" Background="#443728" BorderBrush="#A88D53" />
+                        </WrapPanel>
+                        <TextBlock x:Name="AnalyticsSourceStatus" FontSize="12" Foreground="#DCCB91" Margin="0,0,0,6" TextWrapping="Wrap" />
+                        <TextBlock x:Name="AnalyticsTransferStatus" FontSize="12" Foreground="#C7D6E3" Margin="0,0,0,8" TextWrapping="Wrap" />
+                        <local:AnalyticsView x:Name="AnalyticsDisplay" />
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="SavedResultsTab" Header="Saved Results" Width="142">
+                    <StackPanel>
+                        <TextBlock Text="Saved Results" FontSize="23" FontWeight="SemiBold" />
+                        <TextBlock x:Name="SavedResultsScope" Foreground="#D8C785" Margin="0,7,0,8" />
+                        <TextBlock Text="Review results or confirm starting baselines here at any time. Observed XP and placement stay saved beside manual corrections. Reviewing an older match does not change the active session." Foreground="#BCC8D7" Margin="0,0,0,12" />
+                        <TextBlock x:Name="SavedResultsStatus" Foreground="#F1CF69" Margin="0,0,0,12" />
+                        <DataGrid x:Name="SavedResultsGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" MaxHeight="600">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="" CanUserSort="False" Width="42" MinWidth="42" CellStyle="{StaticResource MatchActionsCell}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Tag="{Binding SessionId}" Style="{StaticResource MatchActionsButton}" ToolTip="Match actions"
+                                                    AutomationProperties.Name="Match actions"
+                                                    PreviewMouseLeftButtonDown="SavedResultMenu_PreviewMouseLeftButtonDown"
+                                                    Click="SavedResultMenu_Click">
+                                                <Button.Content>
+                                                    <Canvas Width="4" Height="16" IsHitTestVisible="False">
+                                                        <Ellipse Width="4" Height="4" Canvas.Top="0" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                                                        <Ellipse Width="4" Height="4" Canvas.Top="6" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                                                        <Ellipse Width="4" Height="4" Canvas.Top="12" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
+                                                    </Canvas>
+                                                </Button.Content>
+                                                <Button.ContextMenu>
+                                                    <ContextMenu Background="#202733" BorderBrush="#475466" BorderThickness="1" Padding="3">
+                                                        <ContextMenu.Template>
+                                                            <ControlTemplate TargetType="ContextMenu">
+                                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                                        BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                                                    <ItemsPresenter />
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </ContextMenu.Template>
+                                                        <MenuItem Header="Delete" Foreground="#F1949C" Background="#202733" Padding="12,7"
+                                                                  Tag="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                                                                  Click="DeleteSavedResult_Click">
+                                                            <MenuItem.Template>
+                                                                <ControlTemplate TargetType="MenuItem">
+                                                                    <Border x:Name="DeleteMenuBorder" Background="{TemplateBinding Background}"
+                                                                            Padding="{TemplateBinding Padding}">
+                                                                        <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" />
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsHighlighted" Value="True">
+                                                                            <Setter TargetName="DeleteMenuBorder" Property="Background" Value="#4C2630" />
+                                                                        </Trigger>
+                                                                        <Trigger Property="IsEnabled" Value="False">
+                                                                            <Setter Property="Foreground" Value="#8D7380" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </MenuItem.Template>
+                                                        </MenuItem>
+                                                    </ContextMenu>
+                                                </Button.ContextMenu>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn Header="Match started" Binding="{Binding StartedText}" SortMemberPath="StartedAt" Width="145" />
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" SortMemberPath="Status" Width="140" />
+                                <DataGridTemplateColumn Header="Starting baselines" CanUserSort="False" Width="165">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Starting baselines…" Tag="{Binding SessionId}" Click="ReviewSavedBaselines_Click" Style="{StaticResource SmallButton}" Margin="3" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Observed placement" Binding="{Binding ObservedPlacement}" SortMemberPath="ObservedPlacement" Width="155" />
+                                <DataGridTextColumn Header="Final XP totals" Binding="{Binding FinalXpText}" SortMemberPath="FinalXpText" Width="*" />
+                                <DataGridTemplateColumn Header="Review" CanUserSort="False" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{Binding ReviewLabel}" Tag="{Binding SessionId}" Click="ReviewSavedResult_Click" Style="{StaticResource SmallButton}" Margin="3" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Backup" CanUserSort="False" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Observed…" Tag="{Binding SessionId}" Click="ObservedBackup_Click" Style="{StaticResource SmallButton}" Margin="3" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="CaptureLabTab" Header="Diagnostics Lab" Width="126">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,14">
+                            <Button x:Name="LoadImageButton" DockPanel.Dock="Right" Content="Open Screenshot" Click="LoadImage_Click" Margin="15,0,0,0" />
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Capture diagnostics" FontSize="20" FontWeight="SemiBold" />
+                                <TextBlock Text="Inspect the exact frame and OCR results. Imported images do not change the active session." Foreground="{StaticResource Muted}" FontSize="12" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </DockPanel>
+                        <Grid MinHeight="360">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.35*" />
+                                <ColumnDefinition Width="18" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Border Background="#090C10" BorderBrush="#313A47" BorderThickness="1" CornerRadius="8" Padding="8">
+                                    <Grid>
+                                        <TextBlock x:Name="PreviewPlaceholder" Text="Choose the game window and capture a frame.&#10;&#10;Or open a screenshot to test the reader." HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Foreground="{StaticResource Muted}" MaxWidth="320" />
+                                        <Image x:Name="FramePreview" Stretch="Uniform" AutomationProperties.Name="Captured game frame" />
+                                    </Grid>
+                                </Border>
+                                <TextBlock x:Name="SourceStatus" Grid.Row="1" Text="No frame captured." Foreground="{StaticResource Muted}" FontSize="12" Margin="0,9,0,0" />
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Border x:Name="ReadStateBorder" Background="#26313D" CornerRadius="7" Padding="14" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock x:Name="ReadStateTitle" Text="READY TO READ" FontSize="11" FontWeight="Bold" Foreground="#A0DBEE" />
+                                        <TextBlock x:Name="ReadStateMessage" Text="Open UNLOCK, select a class, and show its current XP column." Margin="0,6,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock x:Name="ReadingsHeading" Grid.Row="1" Text="OBSERVED CLASS TOTALS" Style="{StaticResource SectionLabel}" Margin="0,0,0,8" />
+                                <ItemsControl x:Name="ReadingsList" Grid.Row="2">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="2" Rows="3" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#202630" CornerRadius="6" Padding="12" Margin="0,0,7,7">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding ClassName}" FontSize="11" FontWeight="SemiBold" Foreground="#BAC4D1" />
+                                                    <TextBlock Text="{Binding Xp}" FontSize="23" FontWeight="SemiBold" Margin="0,5,0,1" />
+                                                    <TextBlock Text="{Binding Detail}" FontSize="11" Foreground="{StaticResource Muted}" />
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock x:Name="PlacementStatus" Grid.Row="3" Text="Placement: no evidence" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,4,0,0" />
+                            </Grid>
+                        </Grid>
+                        <Expander Header="OCR text and reader diagnostics" Expanded="Diagnostics_Expanded" Margin="0,18,0,0">
+                            <TextBox x:Name="DiagnosticsText" MaxHeight="150" MinHeight="85" Margin="0,8,0,0" Padding="10" Background="#0D1116" Foreground="#B7C5D4" BorderBrush="#303B48" IsReadOnly="True" TextWrapping="NoWrap" FontFamily="Consolas" FontSize="11" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" />
+                        </Expander>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="SaveReportButton" Content="Save read report…" Click="SaveReport_Click" IsEnabled="False" />
+                            <TextBlock Grid.Column="1" Text="Includes the captured game image and read details. Saved locally." Foreground="{StaticResource Muted}" FontSize="12" Margin="12,0,0,0" VerticalAlignment="Center" />
+                        </Grid>
+                        <TextBlock x:Name="ReportStatus" FontSize="12" Foreground="{StaticResource Muted}" Margin="0,6,0,0" />
+                        <TextBlock Text="LOCAL PROCESSING · No uploads · No automatic screenshot saving · Diagnostic view" FontSize="11" Foreground="#8F9AAA" Margin="0,12,0,0" />
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="OptionsTab" Header="Options" Width="96">
+                    <StackPanel>
+                        <TextBlock Text="Options" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,14" />
+                        <TextBlock x:Name="OptionsMockNotice" Visibility="Collapsed" Text="Mock capture is active. Use Refresh or the game window list to return to real data before changing seasons, shortcuts, or sound." Foreground="#F1CF69" FontSize="12" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="18" Margin="0,0,0,14">
+                                    <StackPanel>
+                                        <TextBlock Text="SEASONS" Style="{StaticResource SectionLabel}" Margin="0,0,0,10" />
+                                        <ComboBox x:Name="SeasonSelector" DisplayMemberPath="Name" SelectionChanged="Season_Changed" AutomationProperties.Name="Season" Margin="0,0,0,10" />
+                                        <TextBox x:Name="SeasonNameBox" AutomationProperties.Name="Season name" ToolTip="Enter a season name to add or rename it." Margin="0,0,0,9" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="AddSeasonButton" Content="Add Season" Click="AddSeason_Click" Margin="0,0,8,0" />
+                                            <Button x:Name="RenameSeasonButton" Content="Rename Selected" Click="RenameSeason_Click" />
+                                        </StackPanel>
+                                        <TextBlock Text="Each season keeps its own baselines, sessions, and history." FontSize="12" Foreground="{StaticResource Muted}" Margin="0,10,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="18">
+                                    <StackPanel>
+                                        <TextBlock Text="LOCAL SAVE FILES" Style="{StaticResource SectionLabel}" Margin="0,0,0,10" />
+                                        <TextBlock x:Name="SavePathText" FontSize="12" Foreground="#C3CDD9" TextWrapping="Wrap" />
+                                        <TextBlock Text="Further analytics are planned for a future season. You can also further analyze your local save files." FontSize="12" Foreground="{StaticResource Muted}" Margin="0,12,0,0" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="18" Margin="0,0,0,14">
+                                    <StackPanel>
+                                        <TextBlock Text="CAPTURE KEYS" Style="{StaticResource SectionLabel}" Margin="0,0,0,10" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="12" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="Snapshot baseline" FontSize="12" Margin="0,0,0,6" />
+                                            <TextBlock Grid.Column="2" Text="Check current XP" FontSize="12" Margin="0,0,0,6" />
+                                            <ComboBox x:Name="SnapshotKeySelector" Grid.Row="1" AutomationProperties.Name="Snapshot key" />
+                                            <ComboBox x:Name="CheckKeySelector" Grid.Row="1" Grid.Column="2" AutomationProperties.Name="Check key" />
+                                        </Grid>
+                                        <Button x:Name="ApplyHotkeysButton" Content="Apply Hotkeys" Click="ApplyHotkeys_Click" HorizontalAlignment="Left" Margin="0,10,0,0" ToolTip="Return to real data before changing capture shortcuts." />
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="18" Margin="0,0,0,14">
+                                    <StackPanel>
+                                        <TextBlock Text="Capture method" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10" />
+                                        <ComboBox x:Name="CaptureModeSelector" DisplayMemberPath="Label" SelectedValuePath="Mode" SelectionChanged="CaptureMode_SelectionChanged" AutomationProperties.Name="Capture method" />
+                                        <TextBlock Text="Quiet capture needs WARDOGS in front and uncovered. Use the capture shortcuts while the game has focus. Automatic reads wait when you switch apps. Window capture supports covered windows and shows the Windows capture border." FontSize="12" Foreground="{StaticResource Muted}" Margin="0,10,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="18" Margin="0,0,0,14">
+                                    <StackPanel>
+                                        <TextBlock Text="Other Options" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12" />
+                                        <CheckBox Checked="Sound_Changed" Unchecked="Sound_Changed" x:Name="SoundToggle" Content="Play a sound when a track reaches its target" Margin="0" />
+                                        <CheckBox x:Name="EnableTestToolsToggle" Content="Enable Test Tools" Checked="TestToolsEnabled_Changed" Unchecked="TestToolsEnabled_Changed" Margin="0,12,0,0" />
+                                        <Button x:Name="OpenOnboardingButton" Content="Reopen setup guide" Click="OpenOnboarding_Click" HorizontalAlignment="Left" Margin="0,14,0,0" />
+                                        <Button x:Name="OpenInteractiveWalkthroughButton" Content="Start guided walkthrough" Click="OpenInteractiveWalkthrough_Click" HorizontalAlignment="Left" Margin="0,8,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="18">
+                                    <StackPanel>
+                                        <TextBlock Text="CURRENT BONUS RULES" Style="{StaticResource SectionLabel}" Margin="0,0,0,10" />
+                                        <TextBlock x:Name="RulesText" FontSize="12" Foreground="#C3CDD9" />
+                                        <TextBlock Text="A session keeps the exact rules it started with." FontSize="12" Foreground="{StaticResource Muted}" Margin="0,12,0,0" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="TestToolsTab" Header="Test Tools" Width="94" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="Test without playing a match" FontSize="23" FontWeight="SemiBold" />
+                        <TextBlock Text="These screenshots use real local OCR. Mock sessions and stats save in a separate folder. Return to real data when finished." Foreground="#BDC9D6" Margin="0,8,0,15" />
+                        <WrapPanel Margin="0,0,0,12">
+                            <Button x:Name="LoadMocksButton" Content="Load fake screenshots / restart" Click="LoadMocks_Click" Background="#443728" BorderBrush="#A88D53" Margin="0,0,10,7" />
+                            <Button Content="Load fake stats" Click="LoadFakeStats_Click" Margin="0,0,10,7" />
+                            <Button x:Name="LoadBaselineCoverageDemoButton" Content="Load saved-baseline workflow" Click="LoadBaselineCoverageDemo_Click" Margin="0,0,10,7" />
+                            <Button Content="Play completion sound" Click="PreviewSound_Click" Margin="0,0,10,7" />
+                        </WrapPanel>
+                        <CheckBox x:Name="MockSoundToggle" Content="Play the target sound in this mock walkthrough" IsChecked="True" Margin="0,0,0,12" />
+                        <TextBlock Text="Read the baseline first. Next mock advances through every tier, 2,499 → 2,500, extra XP, a rejected page, and final results." Foreground="#C0CBD7" Margin="0,0,0,12" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="MockSelector" DisplayMemberPath="Name" AutomationProperties.Name="Mock screenshot scenario" />
+                            <Button x:Name="ReadMockButton" Grid.Column="1" Content="Read selected mock" Click="ReadMock_Click" Margin="10,0,0,0" />
+                            <Button x:Name="NextMockButton" Grid.Column="2" Content="Next mock + read" Click="NextMock_Click" Margin="10,0,0,0" />
+                        </Grid>
+                        <TextBlock x:Name="TestStatus" Text="Choose Load fake screenshots to start. Analytics fake stats can load independently." FontSize="13" Foreground="#F1CF69" Margin="0,12,0,12" />
+                        <Border Background="#090D11" BorderBrush="#3C4652" BorderThickness="1" Padding="8" CornerRadius="7">
+                            <Image x:Name="MockImagePreview" Stretch="Uniform" MaxHeight="350" AutomationProperties.Name="Selected mock screenshot" />
+                        </Border>
+                        <TextBlock Text="Separate mock folder" FontWeight="SemiBold" Margin="0,12,0,5" />
+                        <TextBox x:Name="MockFolderText" IsReadOnly="True" TextWrapping="Wrap" />
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </ScrollViewer>
+</Window>

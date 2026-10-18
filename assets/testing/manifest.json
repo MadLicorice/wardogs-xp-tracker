@@ -1,0 +1,132 @@
+{
+  "Kind": "Explicit mock data for local testing",
+  "Version": 1,
+  "ImageCount": 12,
+  "Resolution": "1920x1080",
+  "BaselineXp": 56486,
+  "Cases": [
+    {
+      "File": "01-assault-baseline.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 56486,
+      "ExpectedThreshold": 64500,
+      "Action": "New Session, then snapshot Assault baseline.",
+      "ExpectedGain": 0,
+      "ExpectedTargetReached": false
+    },
+    {
+      "File": "02-assault-plus-1.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 56487,
+      "ExpectedThreshold": 64500,
+      "Action": "Check Assault current XP after the first baseline.",
+      "ExpectedGain": 1,
+      "ExpectedTargetReached": false
+    },
+    {
+      "File": "03-assault-plus-500.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 56986,
+      "ExpectedThreshold": 64500,
+      "Action": "Check Assault current XP after the first baseline.",
+      "ExpectedGain": 500,
+      "ExpectedTargetReached": false
+    },
+    {
+      "File": "04-assault-plus-1000.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 57486,
+      "ExpectedThreshold": 64500,
+      "Action": "Check Assault current XP after the first baseline.",
+      "ExpectedGain": 1000,
+      "ExpectedTargetReached": false
+    },
+    {
+      "File": "05-assault-plus-1500.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 57986,
+      "ExpectedThreshold": 64500,
+      "Action": "Check Assault current XP after the first baseline.",
+      "ExpectedGain": 1500,
+      "ExpectedTargetReached": false
+    },
+    {
+      "File": "06-assault-plus-2000.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 58486,
+      "ExpectedThreshold": 64500,
+      "Action": "Check Assault current XP after the first baseline.",
+      "ExpectedGain": 2000,
+      "ExpectedTargetReached": false
+    },
+    {
+      "File": "07-assault-plus-2499.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 58985,
+      "ExpectedThreshold": 64500,
+      "Action": "Check Assault current XP after the first baseline.",
+      "ExpectedGain": 2499,
+      "ExpectedTargetReached": false
+    },
+    {
+      "File": "08-assault-plus-2500.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 58986,
+      "ExpectedThreshold": 64500,
+      "Action": "Check Assault current XP after the first baseline.",
+      "ExpectedGain": 2500,
+      "ExpectedTargetReached": true
+    },
+    {
+      "File": "09-assault-plus-3000.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 59486,
+      "ExpectedThreshold": 64500,
+      "Action": "Check current XP: 59,486 cumulative, 3,000 earned XP since baseline.",
+      "ExpectedGain": 3000,
+      "ExpectedTargetReached": true
+    },
+    {
+      "File": "10-assault-completed-page.png",
+      "ExpectedScreen": "Unlock",
+      "ExpectedStatus": "NoCurrentXp",
+      "ExpectedXp": null,
+      "ExpectedThreshold": null,
+      "Action": "Reject this completed rewards page. Keep current XP 59,486 and show the rejection banner.",
+      "ExpectedGain": null,
+      "ExpectedTargetReached": null
+    },
+    {
+      "File": "11-score-defeat-placement-unknown.png",
+      "ExpectedScreen": "EndScore",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": null,
+      "ExpectedThreshold": null,
+      "Action": "Placement only: DEFEAT means 2nd or 3rd. Freeze live checks. Read image 12 for final XP before recording.",
+      "ExpectedGain": null,
+      "ExpectedTargetReached": null
+    },
+    {
+      "File": "12-progression-assault-final-plus-6500.png",
+      "ExpectedScreen": "EndProgression",
+      "ExpectedStatus": "Accepted",
+      "ExpectedXp": 62986,
+      "ExpectedThreshold": 64500,
+      "Action": "Final cumulative XP 62,986 = starting 56,486 + total gain 6,500 INCLUDING bonus. Confirm final XP for the summary, or review later in Saved Results.",
+      "ExpectedGain": null,
+      "ExpectedTargetReached": null
+    }
+  ],
+  "DemoSeasonId": "3a5139bc-7099-4f61-b211-e7751ea9f0aa",
+  "DemoSessionCount": 11,
+  "Notes": "Images are code-rendered fixtures, not records of real matches. Importing them in Diagnostics Lab never changes a session. Use the app's testing flow for session actions."
+}

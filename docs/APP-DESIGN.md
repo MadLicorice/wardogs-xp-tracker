@@ -1,6 +1,6 @@
-# WARDOGS XP Tracker: agreed app design
+# MadLicorice's WARDOGS XP Tracker: agreed app design
 
-Status: agreed product design, saved before app development.
+Status: agreed product design, with prototype amendments through version 0.3.7.
 
 Design record date: October 16, 2026.
 
@@ -24,7 +24,7 @@ Bundle the local OCR resources. Users must not install a development tool or a s
 
 The app uses a separate window. An overlay is outside the first release. A browser version can follow later, after the Windows app works.
 
-Offer an optional sound when a track reaches its target. The sound and its default setting remain UI choices.
+Offer a sound when a track reaches its target. Enable it by default for new profiles. Preserve the saved preference for existing profiles.
 
 All screen reading, calculations, settings, and saves stay on the player's PC. The app needs no account, server, paid processing service, or automatic updater.
 
@@ -69,9 +69,17 @@ Provide separate navigation for these areas:
 - How Bonus XP Works
 - How to Use the App
 
-Analytics has its own page and navigation button. Do not place its charts on the Session Tracker page.
+The full app's Analytics charts have their own page and navigation button. Do not place those charts on the Session Tracker page. The current prototype has an Analytics readiness panel in the Session Tracker sidebar.
 
 The tracker contains six class panels. Each panel shows the class, tracking toggle, baseline state, current gain, target progress, and completion state.
+
+Arrange the panels in two columns and three rows to match the game's class selector:
+
+| Left | Right |
+| --- | --- |
+| Assault | Medic |
+| Recon | Support |
+| Driver | Pilot |
 
 Each panel also gives a compact conditional level forecast. An expanded view can show all three placement forecasts.
 
@@ -149,11 +157,15 @@ Predictions never supply actual final totals or new baselines.
 
 Fresh snapshots initially have **Coverage unknown** for analytics. Tracking starts without waiting for a coverage answer.
 
-Offer one confirmation for all currently captured classes:
+Place starting-baseline certification in the **Analytics** readiness panel on **Session Tracker**. The future Analytics charts remain on a separate page.
 
-> These baselines were captured before I earned XP this match.
+Offer a confirmation for each class's eligible active original baseline. The answer confirms that the baseline precedes any earned XP in that class. A rebase does not qualify as a new starting-baseline certification.
+
+Also offer **Confirm All** with its own confirmation dialog. List the eligible captured baselines for enabled classes in that dialog. Confirm only those listed baseline versions.
 
 Record which classes and baseline versions the answer covers. A later snapshot must not inherit an earlier coverage answer without evidence.
+
+The panel stays red until all enabled classes have confirmed starting baselines. It then turns green with **Starting baselines confirmed**. This state confirms neither final XP nor bonus receipt. It does not establish complete analytics data.
 
 Reusing a last-known final records its origin. It does not prove that the value is current.
 
@@ -681,6 +693,8 @@ The chart asset can enter the repository during app work. The design record does
 
 Create the app tutorial after the UI is final. Use screenshots of the actual app rather than speculative interface images.
 
+Complete the onboarding workflow before making tutorial screenshots. See [Onboarding and tutorial plan](TUTORIAL-PLAN.md) for the dependency and current status.
+
 Cover new sessions, optional tracks, correct UNLOCK pages, wrong completed pages, capture keys, manual entry, rebases, and baseline reuse.
 
 Also cover final-result confirmation, pending results after restart, early exits, seasons, rulesets, and the separate Analytics page.
@@ -752,7 +766,7 @@ These checks are release requirements, not claims that a prototype already passe
 - Calculate the 1,400- and 3,500-XP average missed-bonus examples.
 - Keep missed XP outside received totals and pie percentages.
 - Count missed bonuses once per class per session and update them after corrections.
-- Keep Analytics separate from the default tracker page.
+- Keep Analytics charts on a separate page from the default tracker.
 
 ### 18.4 Packaging and file checks
 
@@ -762,3 +776,562 @@ These checks are release requirements, not claims that a prototype already passe
 - Recover from an interrupted save without silently losing season history.
 - Test representative large season files without blocking the UI.
 - Include the required help, obvious creator credit, and the final UI tutorial screenshots.
+
+## 19. Accepted prototype UI amendments: 0.2.1
+
+The earlier sections describe the agreed full app. This section records the 0.2.1 UI decisions. Sections 20 through 22 update the prototype scope.
+
+### 19.1 Name, logo, and navigation
+
+Use **MadLicorice's WARDOGS XP Tracker** as the app name. Use the supplied WARDOGS logo without changing its image bytes.
+
+Keep the six tracker cards in two columns and three rows: Assault/Medic, Recon/Support, and Driver/Pilot.
+
+Use **Diagnostics Lab** for screenshot import, frame previews, OCR text, and read reports. Imported screenshots remain diagnostic and never change session state.
+
+Place an **Analytics** readiness panel in the Session Tracker sidebar. It contains starting-baseline certification per class, plus **Confirm all captured baselines…** with a separate confirmation.
+
+In 0.2.1, charts remained later work on their own Analytics page. The readiness panel's green state means only that the enabled starting baselines are confirmed. Final totals, bonus receipt, and complete analytics coverage remain separate.
+
+When no session is active, cover the card area with a **New Session** prompt inside the app. Offer **Resume Saved Session** there when appropriate. This is an in-app session prompt, not a game overlay.
+
+### 19.2 Defaults and save controls
+
+Enable the completion sound by default for new profiles. Preserve the user's saved preference when an existing profile loads.
+
+Save accepted readings and relevant state changes automatically to local files. Do not require a manual Save action during normal use.
+
+Show **Retry save** only after a save failure. Keep the failure message and recovery action visible until the save succeeds.
+
+### 19.3 Prototype boundaries
+
+The prototype supports session tracking, guarded baseline capture, current XP checks, manual entry, rebases, pending finals, local history, seasons, shortcuts, and sound.
+
+Version 0.2.1 did not include analytics charts, the complete How To pages, or a rules editor. Section 20 updates that prototype scope.
+
+## 20. Analytics and temporary testing: 0.3.0
+
+### 20.1 Separate Analytics tab
+
+Show charts on a separate **Analytics** tab. Keep the starting-baseline readiness panel in the Session Tracker sidebar.
+
+The Analytics tab includes native class bars, a source pie, exact values, coverage counts, and record explanations. Green shows supported in-match XP. Gold shows bonus XP. Gray shows **Indeterminate XP** whose source remains unresolved.
+
+The class bars and pie use the same included received totals. Pending candidates and incomplete records remain separate. Preserve known totals with source uncertainty rather than assigning them a guessed split.
+
+Show **Average Missed Bonus** outside received totals and the pie. Calculate each eligible record's average with equal weight for first, second, and third place. The displayed total sums those record averages. Use **At least** when incomplete evidence supports only a lower bound.
+
+Retain schema version 1 for existing season saves. Derive analytics from the saved observations and each session's rules snapshot. **Export analytics…** includes the calculated report, derivation version, source season records, and a mock-data marker where applicable.
+
+### 20.2 Temporary Test Tools
+
+Section 24.2 supersedes the temporary status and visibility rules in this historical subsection.
+
+Provide **Test Tools · temporary** for development checks without the game. Bundle exactly 12 mock PNGs, below the agreed maximum of 15. These are code-rendered functional OCR fixtures, clearly marked as mock data.
+
+**Load fake screenshots / restart** creates an isolated mock session and establishes the Assault baseline automatically through the real local OCR reader. Only Assault is enabled initially. The app returns to Session Tracker after that baseline read.
+
+Show **Next mock + read** in the header while screenshot mode is active. It advances the selected mock image and reads it while Session Tracker stays visible. Test Tools also contains a selector and **Read selected mock**.
+
+The sequence covers the baseline, positive XP, every bonus tier, 2,499 versus 2,500 XP, extra XP, a rejected completed page, DEFEAT, and final progression. Reuse the same images for rebase, manual-entry, and end-outcome checks. Reset the walkthrough before another full tier sequence.
+
+While screenshot mode is active, F3 and F4 read the selected bundled image. They follow the normal snapshot and check rules. No real game window is captured in that mode.
+
+**Load fake stats** loads 11 synthetic session records into Analytics. It does not replace the active tracker. Mark fake analytics clearly and keep its export distinct from real data.
+
+### 20.3 Test sound and isolation
+
+The mock target-sound checkbox defaults to enabled and is independent of the real sound preference. **Play completion sound** plays one preview without changing XP or preferences.
+
+Write mock sessions and extracted test files only within the versioned `mock-data/0.3.0` subfolder of the local save directory. Preserve real season records and preferences.
+
+**Return to real data** restores the real tracker and normal preferences, then clears the fake analytics view. Normal startup loads real data. Saved mock files remain separate. The user restarts the mock walkthrough explicitly with **Load fake screenshots / restart**.
+
+### 20.4 Onboarding before tutorial screenshots
+
+Agree on and implement onboarding before making the screenshot tutorial. The user deleted the associated reminder on October 17, 2026. Section 22.3 records its current status.
+
+The full How To pages, rules editor, onboarding workflow, and screenshot tutorial remain incomplete. See [Onboarding and tutorial plan](TUTORIAL-PLAN.md) before tutorial work.
+
+## 21. Saved results and result review: 0.3.1
+
+### 21.1 Permanent Saved Results tab
+
+Keep a permanent **Saved Results** tab beside the tracker and Analytics. Show pending and confirmed records for the selected season there.
+
+Pending results remain reviewable after another session starts or the app restarts. Confirmed results remain available for later inspection.
+
+**Decide Later** hides the current end-result prompt and saves that decision. It preserves the pending totals, earlier references, and observed backups.
+
+The player can reopen the deferred result from Saved Results. Dismissal does not confirm it, delete it, or establish a baseline for another match.
+
+Review actions target the selected historical session by its identity. Confirming or correcting that result must not select it as the active session.
+
+Keep the newer session's baselines, readings, completion checks, and capture context unchanged. A later confirmation date must not replace a newer last-known match.
+
+### 21.2 Observed backups and placement choices
+
+Preserve structured copies of changed observed final totals and placement evidence before manual corrections or confirmation choices alter the candidate.
+
+Keep earlier observed revisions separate from later observed revisions and user choices. Repeated OCR of unchanged values must not add duplicate backups.
+
+Store these backups as an optional addition to schema version 1. Existing saves that lack the list must still load.
+
+Before changing a legacy pending result, preserve its available observed values. A score-only read after an upgrade must not discard its earlier XP evidence.
+
+The first placement choice starts with **Use observed**. Its label states what the evidence supports, such as first place, second or third, or unknown placement.
+
+Do not label observed DEFEAT evidence as wholly unknown. Do not claim an exact placement when only second or third is known.
+
+Keep manual first-, second-, and third-place choices available. Preserve the observed placement and the manual choice with their separate sources.
+
+A score-only result can freeze live tracking and preserve placement evidence. Recording final XP requires at least one observed or explicitly entered class total.
+
+### 21.3 Blocking saved-match summary
+
+Section 22.4 supersedes the verbose modal presentation in this historical amendment.
+
+After saving confirmed results, show a modal summary that requires dismissal. The player can also reopen a saved match's summary from Saved Results.
+
+Show each available starting total, ending total, and recorded difference. Show missing class totals as unavailable rather than zero.
+
+Use the session's saved rules and supported evidence for the source split. Show in-match XP, bonus XP, and gray Indeterminate XP separately.
+
+When starting coverage is unconfirmed, show the known difference with its coverage limit. Keep its source unresolved instead of showing a false zero total.
+
+This summary does not certify incomplete coverage or add excluded records to the Analytics charts. An invalid or negative difference requires review.
+
+Explain each uncertainty from its actual cause: placement, unknown completion, incomplete coverage, conflicting evidence, or incompatible bonus rules.
+
+Keep known totals visible when their source remains uncertain. A summary or calculated split must never advance a live target or play its completion sound.
+
+### 21.4 Table states and stable width
+
+Section 22 supersedes the width cap and inactive-selection behavior in this historical amendment.
+
+Use the dark theme for table selections with and without keyboard focus. Keep selected text legible when the player uses another control.
+
+Show a visible sort arrow in each sorted column header. Sort numeric values and dates by their underlying values, not their formatted display text.
+
+Keep the main window at a stable maximum width of 1,080 WPF device-independent pixels. Tab changes must not expand it beyond that limit.
+
+Clamp the initial size to the available work area. Keep lower content reachable through scrolling when display scaling reduces the available space.
+
+### 21.5 Clear mock labels
+
+Keep the 12-image walkthrough and its labels explicit about what each image tests.
+
+| Mock | Required meaning |
+| --- | --- |
+| 9 | Assault has 59,486 current XP, which is 3,000 above the initial baseline. The target already remains complete. |
+| 10 | This is an intentionally invalid completed page. Reject it and retain the baseline, last accepted reading, and target state. |
+| 12 | Assault has 62,986 final XP, which is 6,500 above the initial baseline. This final total can include a bonus. |
+
+Mock 11 supplies DEFEAT placement evidence without final class XP. Mock 12 supplies the final total for a separate confirmation.
+
+The 6,500-XP final difference must not become another live earned-XP reading. Keep the observed in-match lower bound and unresolved source split visible.
+
+## 22. Responsive layout and table interaction: 0.3.2
+
+### 22.1 Free resizing with stable bounds
+
+Section 23 supersedes this subsection's 690-unit card surface, minimum-height assumptions, and sidebar-below-cards layout. Keep this section as the historical 0.3.2 design.
+
+Remove the 1,080-width cap from section 21.4. Let the player resize or maximize the app to 1920-wide windows and beyond.
+
+Use three profiles based on the root's available content width, measured in WPF device-independent units:
+
+| Available content width | Layout |
+| --- | --- |
+| Below 1,100 | Two columns and three rows of cards, with the sidebar below |
+| 1,100 through 1,599 | Cards beside a fixed 360-unit sidebar |
+| At least 1,600 | Cards beside a fixed 420-unit sidebar |
+
+Preserve the card order across profiles. Use the window's available space and keep lower content reachable through vertical scrolling.
+
+Within a profile, text and state changes must not move or resize the card area, individual cards, or sidebar.
+
+Keep the six-card area at 690 units high. Reserve bounded areas for session status, analytics readiness, mock instructions, and rejected-read feedback.
+
+A rejection, deferred result, or pending final replaces content inside its reserved area. It must not push the cards downward.
+
+Bound long status, forecast, and warning text. Use deliberate ellipsis and a full tooltip where needed. Keep tab labels and primary button captions readable.
+
+Keep the initial size within the available work area. The initial clamp must not prevent later resizing to a larger display.
+
+### 22.2 Table focus, scrolling, and arrows
+
+Keep active table selection dark and legible. Clear the selection after an outside pointer action, focus change outside the table, or window deactivation.
+
+Clicks on a table header, resize grip, or row action remain inside the table. Historical row actions retain their own record identity.
+
+Use a filled vector arrow for the current sort direction. Retain numeric and date sorting and preserve the user's sort order during report refresh.
+
+The mouse wheel first scrolls the table when that table has room in the requested direction. At its boundary, continue through the nearest scrollable parent.
+
+Do not trap wheel input inside a short table or at the end of a longer table.
+
+### 22.3 Onboarding and reminder status
+
+On October 17, 2026, the user explicitly deleted **onboarding-before-the-tutorial**. No reminder automation remains active. Do not create a replacement without a new explicit user request.
+
+Onboarding remains future work and a prerequisite for the finished screenshot tutorial. These UI corrections do not start either workflow.
+
+### 22.4 Compact recorded-XP summary
+
+After a successful final save, show a blocking dialog headed **MATCH XP RECORDED**. Show the known total in large text.
+
+Show supported earned XP in green, bonus XP in gold, and Indeterminate XP in gray. Unknown source amounts remain unknown. Supported parts and unresolved XP must account for the known total.
+
+Give only brief rows for classes with a known measured increase. Omit missing-class rows, cumulative baselines, placement, rules, and long explanations from this dialog. Keep the saved evidence and detailed analytics available elsewhere.
+
+The dialog closes with **Continue**. It must not change session data or trigger completion sounds.
+
+### 22.5 Waiting for final XP
+
+A score-only end screen can establish placement and freeze live tracking. It does not contain final class XP.
+
+Until final totals exist, label the disabled action **Waiting for final XP**. Explain that the player must show the match-end PROGRESSION screen and capture its class totals with the current check shortcut.
+
+In mock 11, tell the player to use **Next mock + read** for mock 12. After that capture, enable **Record Final XP**. Recording confirms existing captured totals and does not capture a new frame.
+
+## 23. Finite Session Tracker viewport: 0.3.3
+
+### 23.1 Supported short-window target
+
+Section 24.1 supersedes this subsection's minimum dimensions. The validation in section 23.5 describes version 0.3.3.
+
+The user reported that the 0.3.2 tracker remained too tall, the page moved when Quick Guide opened, and read errors appeared below Analytics.
+
+Target actual native outer windows of 1280 × 648 and 1920 × 648 physical pixels at 96 DPI. These are app-window constraints, not new OCR game-layout resolutions. Windows scaling changes the available space in WPF units.
+
+The minimum window size must not enlarge a supported requested window. Keep outer bounds fixed during reads, tab changes, status updates, and guide expansion. The player can still resize or maximize the app.
+
+Use a 640-unit minimum height. Also check 780 × 640 and 1280 × 640 native windows at 96 DPI, so the minimum does not clip card actions.
+
+### 23.2 Finite tracker layout
+
+Session Tracker uses a finite client viewport. Keep the brand and capture controls compact. Give the main tracker body the remaining bounded space instead of measuring it as an app-wide scrolling document.
+
+Retain the two-column, three-row class order: Assault/Medic, Recon/Support, Driver/Pilot. Use compact cards with readable XP and working baseline/manual actions. Remove the fixed 690-unit surface. A large window must not turn the cards into oversized blank panels.
+
+Keep the card grid and inactive overlay within the same bounded card region. Showing a rejection, pending result, or deferred result must not resize or move that region.
+
+### 23.3 Pinned read status and independent sidebar
+
+Read status belongs above the main card body and Analytics. Reserve that area so a rejected read does not push the cards down. The error must be visible without scrolling through Analytics.
+
+Routine session feedback uses the same strip. A global shortcut registration conflict must appear in visible feedback, not only in a tooltip.
+
+Keep the sidebar beside the cards at the supported normal window widths. Its own bounded scroll viewer contains secondary status, analytics readiness, and Quick Guide. Expanding the guide may change that scroll area's extent or offset. It must not change card bounds, overlay bounds, or the whole page's offset.
+
+Session Tracker has no app-wide vertical scroll range. Entering it from a deeply scrolled tab must not retain an old page offset. Preserve ordinary keyboard navigation and local bring-into-view behavior; do not suppress it globally.
+
+### 23.4 Other pages and unchanged data rules
+
+Analytics, Saved Results, Test Tools, Diagnostics Lab, and Options keep page scrolling. Preserve the shared table selection clearing, filled sort arrows, typed sorting, and inner-to-parent wheel handoff from section 22.2.
+
+This layout change does not alter XP reading, baselines, the earned-XP target, bonus rules, final confirmation, or local-save schema version 1. Match-end bonuses remain separate from the live target check.
+
+### 23.5 Native-window validation
+
+The shown native-window regression passed 4,367 checks with zero failures. Actual 1280 × 648 and 1920 × 648 outer windows at 96 DPI retained the requested height and had a 609-unit client viewport.
+
+Track the correction in [GitHub issue #3](https://github.com/MadLicorice/wardogs-xp-tracker/issues/3).
+
+The checks covered all six baseline/manual actions within their cards and the viewport, pinned read errors, inactive overlays, pending-final buttons, and the longest supported shortcut labels. Quick Guide expansion retained the card and overlay bounds at the top and end of the independent sidebar.
+
+Returns from all five other tabs passed at 780-, 1280-, and 1920-wide windows. The tracker retained a finite viewport while the other pages kept scrolling. Taller and wider cases also passed. These results cover the tested 96-DPI configurations.
+## 24. Readable tracker, optional Test Tools, and analytics import: 0.3.4
+
+### 24.1 Readable cards and pinned match feedback
+
+The user requested larger class and XP text, visible end-of-match prompts, and fixes for clipped controls and input failures.
+
+Retain the finite Session Tracker viewport and independent sidebar from section 23. Keep the cards in the game's two-column, three-row order.
+
+Increase the class-name font from 12 to 16. Use size 12 for the baseline, current, and detail lines that used size 10.
+
+Allow a 441-unit maximum card region, up 5% from 420. Keep individual cards compact and all baseline/manual actions visible.
+
+Use a minimum window size of 816 × 672 WPF units. These increases stay within 5% of the previous 780 × 640 minimum. Actual native-window checks must use the new dimensions and account for Windows display scaling.
+
+Pin the end-of-match prompt in the same top status area as read feedback. Keep its record and defer actions visible without scrolling through Analytics ONLY.
+
+Fix sidebar scrollbar clipping and tab-button clipping in normal, selected, and hover states. A selected tab keeps its gold state during hover.
+
+Keep Options reachable during mock capture. Disable only the real-data options that cannot change during that mode. The game-window list and Refresh must remain usable and safely restore real capture before selecting its source.
+
+Keep card bounds, overlay bounds, and outer window bounds stable during state changes, tab changes, and Quick Guide expansion. The user can still resize or maximize the window.
+
+### 24.2 Permanent Test Tools opt-in
+
+Retain Test Tools as a supported optional part of the app. Add **Enable Test Tools** in Options. It defaults to off when the saved preference is absent.
+
+Save the choice locally. Enabling it reveals the tab with a brief gold flash and does not change the selected tab.
+
+When disabled, hide the tab and all mock/fake-data actions. Ordinary analytics import and export remain visible.
+
+Before disabling Test Tools, safely restore the real tracker and preserve mock records in their separate folder. If the latest mock records cannot save, keep the tools enabled and explain the failure.
+
+Do not mutate real season records or real sound settings while testing. Keep imported analytics selected when Test Tools is disabled. Explicit successful switches to fake, mock, or real data can remove the imported selection.
+
+This amendment does not change mock result 11's correctness. Its existing placement-only sequence remains outside this correction's scope.
+
+### 24.3 Analytics import file picker
+
+Keep analytics separate from the primary tracker. Rename its tracker-sidebar certification heading to **Analytics ONLY**.
+
+Add **Import analytics…** beside **Export analytics…** on the Analytics page. The player selects a Markdown analytics export or season save with a file picker.
+
+Use the existing strict Markdown container, format, and schema checks. Validate required season fields, records, and copied rules before selecting the data.
+
+An analytics export must retain `Report`, `SourceSeason`, and `IsMockData`. Recalculate the report from the validated source season. Cached report amounts are not authoritative.
+
+Keep the imported source separate in memory. Import does not merge records, select a real season, change live tracking, or write local saves.
+
+Show the imported filename and season. Keep the source label and import/export feedback visible independently of Test Tools.
+
+**Return to current analytics** removes only the imported source and reveals the current real or mock analytics underneath. Canceling or rejecting a file leaves the prior selection intact.
+
+Export the same source season and mock-data label that the page displays. Received XP and missed-bonus estimates retain their separate meanings.
+
+### 24.4 Data and validation limits
+
+This correction preserves season schema version 1, OCR numeric rules, baseline rules, earned-XP targets, and final confirmation. Match-end bonuses never advance the live target.
+
+The import service passed 26 checks. The integrated WPF import path passed 25 checks with Test Tools off. These checks covered source recalculation, labels, cancel/failure retention, return to current analytics, and unchanged real tracker state and file bytes.
+
+Track this correction in [GitHub issue #4](https://github.com/MadLicorice/wardogs-xp-tracker/issues/4). The final portable native regression passed 4,282 checks. Input checks passed 203 checks, and Test Tools checks passed 30. The packaged executable initialized an isolated save and closed with exit code 0. Native windows included the 816 × 672 minimum at 96 DPI. See [UI validation](UI-INTERACTION-VALIDATION.md).
+
+## 25. Later analytics baseline confirmation and clearer options: 0.3.5
+
+### 25.1 Manual retrospective confirmation
+
+Allow explicit starting-baseline confirmation after match end, including later review of a saved match. Offer individual eligible classes and a separately confirmed all-eligible action where available.
+
+Bind the action to that session's retained original baseline, class, baseline ID, and version. Record a later user attestation that the original snapshot preceded earned XP. Preserve its original value, time, observations, and correction history.
+
+Do not replace a baseline, add inferred earlier XP, or move a live counter. Reviewing a historical match must not activate it or alter a newer session. Repeated confirmation must not add duplicate history.
+
+Keep eligibility limits for missing, invalid, and conflicting evidence. A rebase does not rewrite the original starting value. Starting-baseline confirmation remains separate from final-result confirmation, bonus receipt, and complete analytics coverage.
+
+### 25.2 No automatic certification from cumulative totals
+
+The user confirmed that the match-end screen shows cumulative XP totals only. It does not show an independent whole-match earned-XP amount.
+
+Do not automatically certify a baseline from exact placement and final cumulative XP. This is an evidence limit, not an unimplemented feature. Do not add a new consistency-check UI.
+
+Under the current rules, these two matches produce identical captured evidence:
+
+| Item | On-time snapshot | Snapshot after 500 XP |
+| --- | ---: | ---: |
+| True starting XP | 56,486 | 55,986 |
+| Captured baseline | 56,486 | 56,486 |
+| Last captured UNLOCK total | 59,486 | 59,486 |
+| Whole-match earned XP | 3,000 | 3,500 |
+| Exact finishing place | 2nd | 2nd |
+| Bonus XP | 3,500 | 3,500 |
+| Final cumulative XP | 62,986 | 62,986 |
+
+Solving `final - assumed_baseline = earned + bonus` and reconstructing the start from that solution returns the assumed baseline by construction. An exact source split does not prove that its supplied baseline covered the whole match.
+
+Future automatic certification requires additional independent evidence that identifies the start, complete match/class association, correct saved rules, and preserved provenance. An independently known capped bonus alone remains insufficient. Such a new evidence source is outside 0.3.5.
+
+### 25.3 Analytics warning and heading
+
+Use the tracker-sidebar heading **For Analytics ONLY**. Keep the red readiness panel separate from the live XP target.
+
+Keep this warning separate from the class's live target state. Its presence must not block tracking, change earned XP, or imply that final results are missing. A confirmed start does not certify final XP or bonus receipt.
+
+The saved-match modal always uses a bright green bold **MATCH XP RECORDED!** success heading. Keep the known total white. This heading confirms that the record saved, independent of analytics coverage.
+
+When starting baselines remain unconfirmed, show an underlined gold warning in place of **Recorded values/classes only**. Name **For Analytics ONLY** and direct the player to **Saved Results → Starting baselines…**. Hide the warning when every enabled class has a valid confirmed original starting baseline. Preserve supported source colors and unresolved XP without implying that a saved record has complete coverage.
+
+### 25.4 Other Options and tab order
+
+Add an **Other Options** section inside the existing Options tab. Place it between Capture Keys and Current Bonus Rules.
+
+Move the completion-sound checkbox and Enable Test Tools checkbox into that section. Retain their existing handlers, saved preferences, and mock-mode safety rules. This is a section, not a new tab or expander.
+
+Place the optional Test Tools tab after Options. Keep its default-off preference and safe restoration from mock data. Enabling Test Tools must not change the selected tab.
+
+### 25.5 Mock coverage and validation
+
+Keep the PNG walkthrough at exactly 12 images. Preserve its cases and distinct expected results. It remains within the existing 15-image limit.
+
+Add **Load saved-baseline workflow** to Test Tools. Generate a separate one-match Assault/Medic example with unconfirmed original starting baselines. Use it to review the conditional summary warning and manually confirm starting coverage later. After confirmation, its 11,700 total must split into 4,500 in-match XP and 7,200 bonus XP.
+
+Save this example as `history-baseline-workflow.md`. It must not overwrite the 11-match fake-stats demo or real player history. It adds no PNGs.
+
+Do not label a cumulative final total as independent earned XP or treat a rule-based split as a directly observed bonus. Manual retrospective confirmation must remain explicit in the walkthrough.
+
+The mathematical audit passed 32 checks against the production Core rules, source solver, SessionTracker, and AnalyticsEngine. It proved the indistinguishable-start counterexample and circular reconstruction. Core tests passed 235 checks, native viewport checks passed 4,282, and summary checks passed 224. Historical WPF workflows passed 59 checks, including real and mock save recovery. The Release executable initialized isolated saves and closed normally with exit code 0. See [UI validation](UI-INTERACTION-VALIDATION.md).
+
+Track this scope in [GitHub issue #5](https://github.com/MadLicorice/wardogs-xp-tracker/issues/5).
+
+## 26. First-use guide and optional real-game walkthrough: 0.3.6
+
+### 26.1 Entry, deferral, and replay
+
+Implement both a short setup guide and an optional interactive walkthrough before the finished How To pages or tutorial screenshots. The short guide explains existing controls. It requires no running game, capture, or baseline to advance.
+
+Always open the short guide on first use after successful initialization. Legacy settings without guide fields follow the same first-offer path. Reserve the offer across startup work. If the app is busy, show it afterward instead of losing a one-time startup callback.
+
+Use Back, Next, Skip for now, and Finish. Treat X and Escape as deferral. Save completed and deferred versions separately from the app version. Either saved marker suppresses automatic replay for that guide version.
+
+Add **Reopen setup guide** in **Options → Other Options**. Replay uses the current season, source, and actual configured capture-key labels. It does not reset previous guide state merely by opening the window.
+
+After a saved Finish, open **Try guided tracking?** with **Start guided walkthrough** and **Not now**. Do not show this offer after Skip, X, Escape, or an unsaved finish. Starting the interactive walkthrough requires an explicit choice.
+
+### 26.2 Four short pages
+
+| Page | Required explanation |
+| --- | --- |
+| Prepare | Current season and data source, Refresh and game-window selection, New Session for each match, and optional Track classes. Include a dynamic reminder when an existing session is paused. |
+| Read XP | TAB → UNLOCK → class → current XP column. Show the configured snapshot and check labels. Explain Manual XP, the completed-reward-page trap, the green earned-XP target, and separate bonus receipt. |
+| Record results | Match-end PROGRESSION → configured check shortcut → Record Final XP. Explain Decide Later/Saved Results and End Session after an early exit or unknown outcome. |
+| Optional Analytics | Explain For Analytics ONLY confirmation of a baseline that preceded earned XP, later confirmation through Saved Results → Starting baselines…, and the separate Analytics tab. Tracking does not require analytics certification. |
+
+The paused-session reminder must leave the saved session paused. Resume is only for the same game match. A different match requires the player's explicit New Session action after the guide closes.
+
+### 26.3 Data and preference preservation
+
+The guide must not create or resume sessions, capture a window, change XP, certify coverage, load fake data, change sound, or select another season/source automatically.
+
+Preserve real, mock, and imported sources when replaying. Keep Test Tools off when its preference is absent in new or legacy settings. Preserve an explicitly saved true preference.
+
+Use two optional settings fields for completed/deferred versions and guide content version 1. Save them through a dedicated settings-only path. Preserve all other preferences and session records. On a write failure, roll back guide-version fields and show Retry and **Close without saving**. The modal retains the requested choice for Retry. Do not falsely claim a saved completion or apply the global tracker save block for this guide-only failure.
+
+An unsaved marker can cause the guide to appear again on the next launch. Retry must attempt a real write rather than returning through a blocked guard.
+
+### 26.4 Owned accessible modal
+
+Use an owned, fixed-size modal targeting 680 × 560 WPF units, clamped to the available work area. Keep the body scrollable and footer pinned. Preserve readable content, keyboard navigation, and reachable Back/Next/Skip/Finish actions.
+
+Opening or closing the guide must not resize the main app or alter card/session bounds. Existing pending results remain pending. Global capture shortcuts and automatic reading must not mutate a session through the open guide.
+
+### 26.5 Modeless interactive walkthrough
+
+Use a modeless task panel at the top of the tracker sidebar, above For Analytics ONLY. Keep the app and game usable. Bound the panel within the independent sidebar. Its content must not resize the main window, move the cards, or cover final-result actions.
+
+Offer **Pause**, **Continue**, **Restart for new match**, and **Close guide**. These actions affect the guide, not the game match. Save pause and progress state across restarts. Continue walkthrough must not act as Resume Saved Session.
+
+Add a separate **Start guided walkthrough** action in **Options → Other Options**. Change its caption to a resume or view action when saved guide state exists. Opening or replaying the guide does not change real, mock, or imported sources.
+
+| Step | Requirement |
+| --- | --- |
+| Select game | Continue requires a selected real game window. It does not capture automatically. |
+| New session | Require an explicit New Session after the walkthrough starts. An existing match requires a pause until the next new match. |
+| Baseline capture | Require a real UNLOCK snapshot. Bind the first captured class and original baseline. Capture every enabled class or let the player clear Track for unneeded classes. |
+| Starting coverage | Require manual confirmation of all enabled original starting baselines. Explain that each original snapshot must precede earned XP. |
+| Current capture | Require a real current UNLOCK read for the bound match. An unchanged XP value is valid. No actual gain or maximum-tier event is required. |
+| Final capture | Require a real end-of-match PROGRESSION read. Missing final class totals remain missing. |
+| Final confirmation | Require explicit Record Final XP confirmation for the bound result. Later Saved Results review can satisfy this step without activating an older match. |
+| Analytics | View this match in Analytics with the real source and correct season. An imported or fake overlay cannot satisfy this step. Then mark the walkthrough complete. |
+
+Clearly state that proper match-wide Actions/Bonus breakdowns require starting-baseline certification and confirmed final results. Point to Analytics details. Starting-baseline certification remains a manual attestation. The guide must never infer that timing from XP totals, placement, or a calculated split.
+
+If the player earned XP before a baseline, preserve the live interval tracker. Explain the limit and offer a fresh-match walkthrough. Do not encourage confirmation of an uncertain or late start.
+
+### 26.6 Evidence binding and saved state
+
+Persist optional `InteractiveWalkthroughState` in settings without changing season schema version 1. Use an immutable pure helper to evaluate progress. Keep guide transitions separate from session mutations and game capture.
+
+Bind progress to season, session, captured class, and original baseline IDs/versions. Real capture steps require selected-window capture provenance and accepted matching screens. Mock screenshots, imported images, manual XP, and reused final totals cannot fulfill them.
+
+Source, session, and baseline mismatches show a recovery action. They must not silently associate old evidence, certify coverage, or complete a later step. Preserve legitimate historical final review for the bound session without changing the newer active session.
+
+After explicit Continue, the guide can reconcile retained authentic OCR observations for the exact bound match, class, and original baseline. This avoids requiring another final screen when the player captured it while the guide was paused. It must not infer missing evidence, bypass manual starting coverage, or confirm final results automatically.
+
+Do not fabricate progress when the game is unavailable. Pause and continue explicitly. The guide must not create XP, records, fake datasets, or sound changes. Unknown placement, missing cards, and unresolved analytics retain their normal uncertainty.
+
+### 26.7 Acceptance and tutorial boundary
+
+Both onboarding workflows are implemented in 0.3.6 pending user acceptance. Test fresh and legacy profiles, all modal exits, the saved-Finish offer, replay, remapped keys, paused sessions, source preservation, and guide-save recovery before release.
+
+Test real-evidence gates, unchanged current XP, manual all-enabled coverage, explicit final confirmation, historical review, and the matching real Analytics source. Test Pause/Continue across restart and recovery after source, session, or baseline changes. Mock, imported, manual, and reused-final data must not create fake real-capture progress.
+
+The full How To pages and tutorial screenshots remain future work. Create them only after the guide and final labels are accepted. Any guide images captured for validation are QA previews, not finished tutorial screenshots. Update [the tutorial plan](TUTORIAL-PLAN.md) to distinguish implementation from acceptance.
+
+The user deleted the earlier onboarding reminder on October 17, 2026. No reminder automation belongs to this change, and none may be recreated without a new explicit request.
+
+Track this scope in [GitHub issue #6](https://github.com/MadLicorice/wardogs-xp-tracker/issues/6).
+
+## 27. Saved-match deletion, guide skips, and quiet automatic reads: 0.3.7
+
+### 27.1 Whole-match deletion
+
+Place a small **⋮** menu in the first Saved Results column so it stays reachable on narrow windows. Its **Delete** action is red, including hover. Opening the menu must not select or leave a highlighted table row.
+
+Keep the menu header unsorted. The initial descending arrow belongs to Match started. Refresh must retain the user's actual date-sort direction and row order.
+
+Use the exact confirmation **This action cannot be undone. Delete?** with Yes and No. No has initial focus, default-button behavior, and cancellation behavior. No, Escape, and X keep the match unchanged. Reserve busy before the dialog so game capture and result edits cannot run behind it.
+
+Yes removes the entire session, including its observations, history, original baselines, pending/confirmed finals, and derived analytics. Recalculate analytics from remaining sessions. Do not patch aggregate totals independently.
+
+If the deleted ID equals ActiveSessionId, clear it and the app's resume choice. Do not activate an older match or create a new one. Preserve other sessions, their XP and provenance, season preferences, rules, and imported read-only data. Existing references to a deleted source ID in another match's reused-baseline provenance remain historical metadata.
+
+Write to the exact owner: real season, screenshot-mock session, or fake-results dataset. A failed save keeps deletion in memory, retains its owner/store/filename, and blocks further changes. Retry saves that owner without repeating deletion. Source restoration and close must resolve the same pending write, rather than substitute the selected real tracker.
+
+Keep the explicit close choice between retrying and exiting with the previous save. Do not claim deletion persisted after a failure. Normal atomic replacements and backup files remain unchanged. No physical file wipe belongs to this action.
+
+When a walkthrough's bound match disappears, show **Walkthrough match deleted** at every bound stage. Disable evidence actions and offer Restart, Skip step, or Close guide. Never recreate the match or infer its missing evidence.
+
+### 27.2 Skip step records guide metadata only
+
+Add **Skip step** to the modeless walkthrough. One click advances exactly one visible task and appends that task to optional saved `SkippedSteps` metadata. The action does not require a game or Test Tools.
+
+Skipping creates no session, XP capture, baseline, coverage certification, final confirmation, or Analytics visit. Those fields remain evidence of actual actions. A later real read can bind actual compatible evidence without inventing the earlier skipped capture.
+
+Disable skipping while busy, paused, awaiting a guide-save retry, unsupported, or finished. Keep skipped tasks visible after reload. If any task was skipped, use **Walkthrough finished · steps skipped** instead of an unqualified completion claim.
+
+Viewing real Analytics can finish the guide after skips, but it does not change analytics eligibility. Missing starts and finals remain missing. Skipping the Analytics task records that skip rather than claiming a visit. Imported or fake Analytics still cannot fulfill the real-source navigation task.
+
+The short guide still always appears on first use. Only a saved Finish opens the optional walkthrough offer. Preserve the manual starting-coverage and final-confirmation rules from section 26. Test Tools still default to off and preserve an explicit saved choice.
+
+### 27.3 Capture mode and automatic-reading defaults
+
+Use **Quiet · visible game only** as the default capture mode, as approved by the user. Require the selected game in the foreground, uncovered, and fully inside the visible desktop. Copy only its client rectangle. Do not create a full-display image or silently read another app.
+
+Retain **Window capture · Windows border** as the persistent Windows Graphics Capture alternative. Reuse its session across reads of the same target. Windows can show its capture border. Stop the session when the target/mode changes or reading stops.
+
+Enable `AutomaticReadEnabled` by default in new and legacy settings without that field. Preserve a saved false value. **Read every 2 seconds** remains optional and persists its setting. This supersedes the earlier startup-off behavior.
+
+Automatic reads require a selected real target, a resumed active or frozen-unconfirmed session, and available local saves. Do not read mock images automatically. Do not start or resume a match. When quiet capture cannot read the foreground game, wait without repeatedly reserving busy or changing the preference.
+
+Ignore ordinary gameplay scenes without repeated unsupported-screen notices. An end score can freeze live counters while automatic reads continue for PROGRESSION totals. Save accepted observations automatically. Never automatically confirm starting-baseline timing or final results.
+
+Pause capture for failures or blocking dialogs without erasing the saved automatic-reading preference. Keep the F3 baseline and F4 check fallbacks. Auto-reading current XP does not establish a missing baseline.
+
+### 27.4 Public assets and release privacy
+
+Keep bundled test assets synthetic and local. The 12 PNG fixtures already exist. The supplied logo makes 13 public images in the current metadata audit. Do not add player captures, personal paths, or custom image metadata to public project files.
+
+Use `tools/AuditPublicRelease.py` for eligible source/assets and the publish folder. Scan project Release assemblies as well as the single-file executable. An earlier Release scan found embedded debug-path references. Release configuration must disable debug symbols and map compiled source paths through `DebugType=none` and `PathMap`.
+
+The source and public-image checks passed. Final compiled-output audit, package identity, and remaining regression counts belong in [UI validation](UI-INTERACTION-VALIDATION.md). Do not infer final package cleanliness from an intermediate source-only scan.
+
+### 27.5 Validation and tutorial boundary
+
+The isolated deletion tests passed 13 checks. The shown WPF deletion workflows passed 78 checks. The walkthrough model passed 148 pure checks, and Skip step passed 64 shown WPF checks. These suites overlap setup coverage and must not be presented as one independent total.
+
+The focused sort/preference follow-up passed 19 shown WPF checks. Final native capture guards passed 15 checks. A controlled host fixture measured three border onsets for the earlier repeated Windows capture, one for persistent Windows capture, and zero for quiet capture. Keep those results separate from live-game acceptance and the final OCR-chain regression.
+
+Both onboarding workflows remain pending user acceptance. The full How To pages and tutorial screenshots remain future work. QA previews remain test evidence. The earlier onboarding reminder stays deleted, and issue #6 remains open. This change does not create a GitHub release or publish a completion comment.
+
+## 28. Saved Results actions icon: 0.3.8
+
+Replace the clipped text glyph in the first Saved Results column with three vector dots. Keep the column at 42 pixels and center a 28-by-28 button with its own cell padding. Use a transparent normal state, a hover fill, and a visible keyboard-focus border.
+
+This is a presentation change. Keep the existing menu, red Delete action, confirmation, match deletion, and analytics recalculation. Keep the current mock-data folder so this update retains existing test sessions. Onboarding and live-game acceptance remain pending; issue #6 stays open.
+
+## 29. Public beta icon and privacy: 0.4.0-beta.1
+
+Use the user-supplied orc as the app icon, with large XP letters over its face. The generated PNG and ten-size ICO contain only image structure, transparency, and pixel data. Set both the native executable icon and the shared WPF Window icon. Keep the existing WARDOGS header logo.
+
+Remove optional image chunks from bundled mocks and the logo without changing their compressed pixel streams. Regenerated mocks must also omit those chunks. Keep private captures, profiles, logs, tools, and build artifacts outside the public Git tree. Audit current source, reachable Git history, assets, project Release assemblies, and the compressed executable bundle.
+
+Remove private paths, account and machine details, secrets, and optional image metadata. Keep the requested branding, required license credits, file-format structures, versions, and functional code identifiers. Release builds and build.ps1 must disable debug symbols and map source paths. Do not claim that a working executable contains no metadata of any kind.
+
+The user approved publication of the beta executable, portable ZIP, and audited source to GitHub on October 17, 2026. Publish v0.4.0-beta.1 as a prerelease after checks pass. Test Tools remain off by default. Live WARDOGS capture and end-screen acceptance remain beta test items. Issue #6 stays open.

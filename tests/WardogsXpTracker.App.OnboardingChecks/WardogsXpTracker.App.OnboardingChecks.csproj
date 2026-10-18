@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CoreProjectPath Condition="'$(CoreProjectPath)' == ''">../../src/WardogsXpTracker.Core/WardogsXpTracker.Core.csproj</CoreProjectPath>
+    <WalkthroughSourcePath Condition="'$(WalkthroughSourcePath)' == ''">../../src/WardogsXpTracker.App/InteractiveWalkthroughProgress.cs</WalkthroughSourcePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(CoreProjectPath)" />
+    <Compile Include="$(WalkthroughSourcePath)" Link="InteractiveWalkthroughProgress.cs" />
+  </ItemGroup>
+</Project>
